@@ -42,15 +42,13 @@ def EnsureNodeJsIsInstalled():
   """Ensure Node.js is installed and that 'node' is the command to run."""
   logging.info('entering ...')
 
-
-    try:
-      output = subprocess.check_output(['node', '--eval', 'console.log("42")'])
-      if output.strip() == '42':
-
-        return
-    except (subprocess.CalledProcessError, OSError):
-      pass
-  Die('Node.js not found. Try "apt-get install nodejs"or follow the install instructions at https://github.com/ampproject/amphtml/blob/master/validator/README.md#installation')
+  try:
+    output = subprocess.check_output(['node', '--eval', 'console.log("42")'])
+    if output.strip() == '42':
+      return
+  except (subprocess.CalledProcessError, OSError):
+    pass
+  Die('Node.js not found. Try "apt-get install nodejs" or follow the install instructions at https://github.com/ampproject/amphtml/blob/master/validator/README.md#installation')
 
 
 def CheckPrereqs():

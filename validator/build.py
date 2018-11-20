@@ -217,7 +217,7 @@ def GenValidatorProtoGeneratedJs(out_dir):
 
 
 def GenValidatorGeneratedJs(out_dir):
-  """Calls validator_gen to generate validator-generated.php.
+  """Calls validator_gen_js to generate validator-generated.js.
 
   Args:
     out_dir: directory name of the output directory. Must not have slashes,

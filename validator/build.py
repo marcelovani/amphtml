@@ -632,7 +632,6 @@ def Main(parsed_args):
   RunTests(update_tests=parsed_args.update_tests, out_dir='dist')
   CreateWebuiAppengineDist(out_dir='dist')
 
-
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(
       description='Build script for the AMP Validator.')

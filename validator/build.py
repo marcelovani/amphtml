@@ -154,63 +154,6 @@ def GenValidatorPb2Py(out_dir):
   open('%s/__init__.py' % out_dir, 'w').close()
   logging.info('... done')
 
-# Similar to GenValidatorGeneratedJS(), except calls out for PHP generation
-def GenValidatorGeneratedPHP(out_dir):
-  """Calls validator_gen to generate validator-generated.php.
-
-  Args:
-    out_dir: directory name of the output directory. Must not have slashes,
-      dots, etc.
-  """
-  logging.info('entering ...')
-  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
-
-  # These imports happen late, within this method because they don't necessarily
-  # exist when the module starts running, and the ones that probably do
-  # are checked by CheckPrereqs.
-  from google.protobuf import text_format
-  from google.protobuf import descriptor
-  from dist import validator_pb2
-  import validator_gen_php
-  out = []
-  validator_gen_php.GenerateValidatorGeneratedPHP(specfile='%s/validator.protoascii' % out_dir,
-                                             validator_pb2=validator_pb2,
-                                             text_format=text_format,
-                                             descriptor=descriptor,
-                                             out=out)
-  out.append('')
-  f = open('%s/validator-generated.php' % out_dir, 'w')
-  f.write('\n'.join(out))
-  f.close()
-  logging.info('... done')
-
-def GenValidatorGeneratedMd(out_dir):
-  """Calls validator_gen_md to generate validator-generated.md.
-
-  Args:
-    out_dir: directory name of the output directory. Must not have slashes,
-      dots, etc.
-  """
-  logging.info('entering ...')
-  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
-
-  # These imports happen late, within this method because they don't necessarily
-  # exist when the module starts running, and the ones that probably do
-  # are checked by CheckPrereqs.
-  from google.protobuf import text_format
-  from dist import validator_pb2
-  import validator_gen_md
-  out = []
-  validator_gen_md.GenerateValidatorGeneratedMd(
-      specfile='%s/validator.protoascii' % out_dir,
-      validator_pb2=validator_pb2,
-      text_format=text_format,
-      out=out)
-  out.append('')
-  f = open('%s/validator-generated.md' % out_dir, 'w')
-  f.write('\n'.join(out))
-  f.close()
-  logging.info('... done')
 
 def GenValidatorProtoascii(out_dir):
   """Assembles the validator protoascii file from the main and extensions.
@@ -304,6 +247,65 @@ def GenValidatorGeneratedJs(out_dir):
       out=out)
   out.append('')
   f = open('%s/validator-generated.js' % out_dir, 'w')
+  f.write('\n'.join(out))
+  f.close()
+  logging.info('... done')
+
+
+# Similar to GenValidatorGeneratedJS(), except calls out for PHP generation
+def GenValidatorGeneratedPHP(out_dir):
+  """Calls validator_gen to generate validator-generated.php.
+
+  Args:
+    out_dir: directory name of the output directory. Must not have slashes,
+      dots, etc.
+  """
+  logging.info('entering ...')
+  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
+
+  # These imports happen late, within this method because they don't necessarily
+  # exist when the module starts running, and the ones that probably do
+  # are checked by CheckPrereqs.
+  from google.protobuf import text_format
+  from google.protobuf import descriptor
+  from dist import validator_pb2
+  import validator_gen_php
+  out = []
+  validator_gen_php.GenerateValidatorGeneratedPHP(specfile='%s/validator.protoascii' % out_dir,
+                                             validator_pb2=validator_pb2,
+                                             text_format=text_format,
+                                             descriptor=descriptor,
+                                             out=out)
+  out.append('')
+  f = open('%s/validator-generated.php' % out_dir, 'w')
+  f.write('\n'.join(out))
+  f.close()
+  logging.info('... done')
+
+def GenValidatorGeneratedMd(out_dir):
+  """Calls validator_gen_md to generate validator-generated.md.
+
+  Args:
+    out_dir: directory name of the output directory. Must not have slashes,
+      dots, etc.
+  """
+  logging.info('entering ...')
+  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
+
+  # These imports happen late, within this method because they don't necessarily
+  # exist when the module starts running, and the ones that probably do
+  # are checked by CheckPrereqs.
+  from google.protobuf import text_format
+  from dist import validator_pb2
+  import validator_gen_md
+  out = []
+  validator_gen_md.GenerateValidatorGeneratedMd(
+      specfile='%s/validator.protoascii' % out_dir,
+      validator_pb2=validator_pb2,
+      text_format=text_format,
+      out=out)
+  out.append('')
+  f = open('%s/validator-generated.md' % out_dir, 'w')
   f.write('\n'.join(out))
   f.close()
   logging.info('... done')
@@ -641,10 +643,10 @@ def Main(parsed_args):
   SetupOutDir(out_dir='dist')
   GenValidatorProtoascii(out_dir='dist')
   GenValidatorPb2Py(out_dir='dist')
-  GenValidatorGeneratedPHP(out_dir='dist')
-  GenValidatorGeneratedMd(out_dir='dist')
   GenValidatorProtoGeneratedJs(out_dir='dist')
   GenValidatorGeneratedJs(out_dir='dist')
+  GenValidatorGeneratedPHP(out_dir='dist')
+  GenValidatorGeneratedMd(out_dir='dist')
   CompileValidatorMinified(out_dir='dist')
   RunSmokeTest(out_dir='dist')
   RunIndexTest()

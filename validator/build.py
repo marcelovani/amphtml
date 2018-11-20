@@ -252,42 +252,6 @@ def GenValidatorGeneratedJs(out_dir):
   logging.info('... done')
 
 
-def GenValidatorProtoGeneratedJs(out_dir):
-  """Calls validator_gen_js to generate validator-proto-generated.js.
-
-  Args:
-    out_dir: directory name of the output directory. Must not have slashes,
-      dots, etc.
-  """
-  logging.info('entering ...')
-  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
-
-  # These imports happen late, within this method because they don't necessarily
-  # exist when the module starts running, and the ones that probably do
-  # are checked by CheckPrereqs.
-  # pylint: disable=g-import-not-at-top
-  from google.protobuf import text_format
-  from google.protobuf import descriptor
-  from dist import validator_pb2
-  import validator_gen_js
-  # pylint: enable=g-import-not-at-top
-  out = []
-  validator_gen_js.GenerateValidatorGeneratedJs(
-      specfile=None,
-      validator_pb2=validator_pb2,
-      generate_proto_only=True,
-      generate_spec_only=False,
-      text_format=text_format,
-      html_format=None,
-      descriptor=descriptor,
-      out=out)
-  out.append('')
-  f = open('%s/validator-proto-generated.js' % out_dir, 'w')
-  f.write('\n'.join(out))
-  f.close()
-  logging.info('... done')
-
-
 # Similar to GenValidatorGeneratedJS(), except calls out for PHP generation
 def GenValidatorGeneratedPHP(out_dir):
   """Calls validator_gen to generate validator-generated.php.
@@ -680,9 +644,10 @@ def Main(parsed_args):
   CompileAmp4AdsParseCssTestMinified(out_dir='dist')
   CompileKeyframesParseCssTestMinified(out_dir='dist')
   CompileParseSrcsetTestMinified(out_dir='dist')
+  CompileValidatorLightTestMinified(out_dir='dist')
   GenerateTestRunner(out_dir='dist')
   RunTests(update_tests=parsed_args.update_tests, out_dir='dist')
-  CreateWebuiAppengineDist(out_dir='dist')
+  #CreateWebuiAppengineDist(out_dir='dist')
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(

@@ -180,7 +180,6 @@ def GenValidatorProtoascii(out_dir):
   logging.info('... done')
 
 
-
 def GenValidatorProtoGeneratedJs(out_dir):
   """Calls validator_gen_js to generate validator-proto-generated.js.
 
@@ -212,6 +211,42 @@ def GenValidatorProtoGeneratedJs(out_dir):
       out=out)
   out.append('')
   f = open('%s/validator-proto-generated.js' % out_dir, 'w')
+  f.write('\n'.join(out))
+  f.close()
+  logging.info('... done')
+
+
+def GenValidatorGeneratedJs(out_dir):
+  """Calls validator_gen_js to generate validator-generated.js.
+
+  Args:
+    out_dir: directory name of the output directory. Must not have slashes,
+      dots, etc.
+  """
+  logging.info('entering ...')
+  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
+
+  # These imports happen late, within this method because they don't necessarily
+  # exist when the module starts running, and the ones that probably do
+  # are checked by CheckPrereqs.
+  # pylint: disable=g-import-not-at-top
+  from google.protobuf import text_format
+  from google.protobuf import descriptor
+  from dist import validator_pb2
+  import validator_gen_js
+  # pylint: enable=g-import-not-at-top
+  out = []
+  validator_gen_js.GenerateValidatorGeneratedJs(
+      specfile='%s/validator.protoascii' % out_dir,
+      validator_pb2=validator_pb2,
+      generate_proto_only=False,
+      generate_spec_only=True,
+      text_format=text_format,
+      html_format=None,
+      descriptor=descriptor,
+      out=out)
+  out.append('')
+  f = open('%s/validator-generated.js' % out_dir, 'w')
   f.write('\n'.join(out))
   f.close()
   logging.info('... done')
@@ -283,40 +318,6 @@ def GenValidatorGeneratedPHP(out_dir):
   f.close()
   logging.info('... done')
 
-def GenValidatorGeneratedJs(out_dir):
-  """Calls validator_gen_js to generate validator-generated.js.
-
-  Args:
-    out_dir: directory name of the output directory. Must not have slashes,
-      dots, etc.
-  """
-  logging.info('entering ...')
-  assert re.match(r'^[a-zA-Z_\-0-9]+$', out_dir), 'bad out_dir: %s' % out_dir
-
-  # These imports happen late, within this method because they don't necessarily
-  # exist when the module starts running, and the ones that probably do
-  # are checked by CheckPrereqs.
-  # pylint: disable=g-import-not-at-top
-  from google.protobuf import text_format
-  from google.protobuf import descriptor
-  from dist import validator_pb2
-  import validator_gen_js
-  # pylint: enable=g-import-not-at-top
-  out = []
-  validator_gen_js.GenerateValidatorGeneratedJs(
-      specfile='%s/validator.protoascii' % out_dir,
-      validator_pb2=validator_pb2,
-      generate_proto_only=False,
-      generate_spec_only=True,
-      text_format=text_format,
-      html_format=None,
-      descriptor=descriptor,
-      out=out)
-  out.append('')
-  f = open('%s/validator-generated.js' % out_dir, 'w')
-  f.write('\n'.join(out))
-  f.close()
-  logging.info('... done')
 
 def CompileWithClosure(js_files, definitions, entry_points, output_file):
   """Compiles the arguments with the Closure compiler for transpilation to ES5.
@@ -654,7 +655,6 @@ def RunTests(update_tests, out_dir):
   logging.info('... success')
 
 
-
 def Main(parsed_args):
   """The main method, which executes all build steps and runs the tests."""
   logging.basicConfig(
@@ -666,10 +666,10 @@ def Main(parsed_args):
   SetupOutDir(out_dir='dist')
   GenValidatorProtoascii(out_dir='dist')
   GenValidatorPb2Py(out_dir='dist')
-  GenValidatorGeneratedPHP(out_dir='dist')
-  GenValidatorGeneratedMd(out_dir='dist')
   GenValidatorProtoGeneratedJs(out_dir='dist')
   GenValidatorGeneratedJs(out_dir='dist')
+  GenValidatorGeneratedPHP(out_dir='dist')
+  GenValidatorGeneratedMd(out_dir='dist')
   CompileValidatorMinified(out_dir='dist')
   RunSmokeTest(out_dir='dist')
   RunIndexTest()

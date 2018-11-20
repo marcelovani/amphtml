@@ -203,8 +203,8 @@ def GenValidatorProtoGeneratedJs(out_dir):
   validator_gen_js.GenerateValidatorGeneratedJs(
       specfile=None,
       validator_pb2=validator_pb2,
-      generate_proto_only=False,
-      generate_spec_only=True,
+      generate_proto_only=True,
+      generate_spec_only=False,
       text_format=text_format,
       html_format=None,
       descriptor=descriptor,

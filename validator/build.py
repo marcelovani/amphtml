@@ -180,6 +180,7 @@ def GenValidatorProtoascii(out_dir):
   logging.info('... done')
 
 
+
 def GenValidatorProtoGeneratedJs(out_dir):
   """Calls validator_gen_js to generate validator-proto-generated.js.
 
@@ -203,8 +204,8 @@ def GenValidatorProtoGeneratedJs(out_dir):
   validator_gen_js.GenerateValidatorGeneratedJs(
       specfile=None,
       validator_pb2=validator_pb2,
-      generate_proto_only=True,
-      generate_spec_only=False,
+      generate_proto_only=False,
+      generate_spec_only=True,
       text_format=text_format,
       html_format=None,
       descriptor=descriptor,
@@ -239,8 +240,8 @@ def GenValidatorProtoGeneratedJs(out_dir):
   validator_gen_js.GenerateValidatorGeneratedJs(
       specfile=None,
       validator_pb2=validator_pb2,
-      generate_proto_only=False,
-      generate_spec_only=True,
+      generate_proto_only=True,
+      generate_spec_only=False,
       text_format=text_format,
       html_format=None,
       descriptor=descriptor,
@@ -651,8 +652,6 @@ def RunTests(update_tests, out_dir):
     env['UPDATE_VALIDATOR_TEST'] = '1'
   subprocess.check_call(['node', '%s/test_runner' % out_dir], env=env)
   logging.info('... success')
-
-
 
 
 

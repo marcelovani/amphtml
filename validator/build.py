@@ -325,7 +325,7 @@ def CompileValidatorMinified(out_dir):
           'engine/parse-url.js', 'engine/tokenize-css.js',
           '%s/validator-generated.js' % out_dir,
           '%s/validator-proto-generated.js' % out_dir,
-          'engine/validator-in-browser.js', 'engine/validator.js', 'engine/validator-full.js',
+          'engine/validator-in-browser.js', 'engine/validator.js',
           'engine/amp4ads-parse-css.js', 'engine/keyframes-parse-css.js',
           'engine/htmlparser-interface.js'
       ],
@@ -410,28 +410,13 @@ def CompileValidatorTestMinified(out_dir):
           'engine/parse-url.js', 'engine/tokenize-css.js',
           '%s/validator-generated.js' % out_dir,
           '%s/validator-proto-generated.js' % out_dir,
-          'engine/validator-in-browser.js', 'engine/validator.js', 'engine/validator-full.js',
+          'engine/validator-in-browser.js', 'engine/validator.js',
           'engine/amp4ads-parse-css.js', 'engine/keyframes-parse-css.js',
           'engine/htmlparser-interface.js', 'engine/validator_test.js'
       ],
       definitions=[],
       entry_points=['amp.validator.ValidatorTest'],
       output_file='%s/validator_test_minified.js' % out_dir)
-  logging.info('... success')
-
-
-def CompileValidatorLightTestMinified(out_dir):
-  logging.info('entering ...')
-  CompileWithClosure(
-      js_files=['engine/htmlparser.js', 'engine/parse-css.js', 'engine/parse-srcset.js',
-                'engine/tokenize-css.js', '%s/validator-generated.js' % out_dir,
-                '%s/validator-proto-generated.js' % out_dir,
-                'engine/validator-in-browser.js', 'engine/validator.js', 'engine/validator-light.js',
-                'engine/htmlparser-interface.js', 'engine/dom-walker.js',
-                'engine/validator-light_test.js'],
-      definitions=[],
-      entry_points=['amp.validator.ValidatorTest'],
-      output_file='%s/validator-light_test_minified.js' % out_dir)
   logging.info('... success')
 
 
@@ -643,10 +628,8 @@ def Main(parsed_args):
   CompileAmp4AdsParseCssTestMinified(out_dir='dist')
   CompileKeyframesParseCssTestMinified(out_dir='dist')
   CompileParseSrcsetTestMinified(out_dir='dist')
-  CompileValidatorLightTestMinified(out_dir='dist')
   GenerateTestRunner(out_dir='dist')
   RunTests(update_tests=parsed_args.update_tests, out_dir='dist')
-  #CreateWebuiAppengineDist(out_dir='dist')
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(

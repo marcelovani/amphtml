@@ -218,7 +218,6 @@ def GenValidatorProtoGeneratedJs(out_dir):
 
 def GenValidatorGeneratedJs(out_dir):
   """Calls validator_gen_js to generate validator-generated.js.
-
   Args:
     out_dir: directory name of the output directory. Must not have slashes,
       dots, etc.
@@ -229,18 +228,24 @@ def GenValidatorGeneratedJs(out_dir):
   # These imports happen late, within this method because they don't necessarily
   # exist when the module starts running, and the ones that probably do
   # are checked by CheckPrereqs.
+  # pylint: disable=g-import-not-at-top
   from google.protobuf import text_format
   from google.protobuf import descriptor
   from dist import validator_pb2
-  import validator_gen_php
+  import validator_gen_js
+  # pylint: enable=g-import-not-at-top
   out = []
-  validator_gen_php.GenerateValidatorGeneratedPHP(specfile='%s/validator.protoascii' % out_dir,
-                                             validator_pb2=validator_pb2,
-                                             text_format=text_format,
-                                             descriptor=descriptor,
-                                             out=out)
+  validator_gen_js.GenerateValidatorGeneratedJs(
+      specfile='%s/validator.protoascii' % out_dir,
+      validator_pb2=validator_pb2,
+      generate_proto_only=False,
+      generate_spec_only=True,
+      text_format=text_format,
+      html_format=None,
+      descriptor=descriptor,
+      out=out)
   out.append('')
-  f = open('%s/validator-generated.php' % out_dir, 'w')
+  f = open('%s/validator-generated.js' % out_dir, 'w')
   f.write('\n'.join(out))
   f.close()
   logging.info('... done')

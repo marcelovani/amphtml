@@ -283,7 +283,6 @@ def GenValidatorGeneratedMd(out_dir):
 
 
 def CompileWithClosure(js_files, definitions, entry_points, output_file):
-def CompileWithClosure(js_files, closure_entry_points, output_file):
   """Compiles the arguments with the Closure compiler for transpilation to ES5.
 
   Args:

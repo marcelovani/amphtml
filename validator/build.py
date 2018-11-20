@@ -633,7 +633,6 @@ def Main(parsed_args):
   GenValidatorProtoGeneratedJs(out_dir='dist')
   GenValidatorGeneratedJs(out_dir='dist')
   GenValidatorGeneratedPHP(out_dir='dist')
-  GenValidatorGeneratedMd(out_dir='dist')
   CompileValidatorMinified(out_dir='dist')
   RunSmokeTest(out_dir='dist')
   RunIndexTest()
